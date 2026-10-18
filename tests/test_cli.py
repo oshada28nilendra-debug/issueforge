@@ -71,3 +71,8 @@ class CLITests(unittest.TestCase):
             result = self.invoke("inspect", "--repo", root)
             self.assertEqual(result.returncode, 0)
             self.assertIn("danger.py", result.stdout)
+
+    def test_run_exposes_model_timeout_for_cpu_inference(self):
+        result = self.invoke("run", "--help")
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("--model-timeout", result.stdout)

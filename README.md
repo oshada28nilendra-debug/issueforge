@@ -102,6 +102,7 @@ A localhost proxy can itself call cloud models; configure its billing separately
 | `--allow-remote` | Explicit consent for remote source transfer/API use |
 | `--image IMAGE` | Owner-prepared image with project dependencies; no auto-install |
 | `--timeout N` | Per-container timeout, 1–120 seconds, default 25 |
+| `--model-timeout N` | Model-request timeout, 1–120 seconds, default 30 |
 | `--max-steps N` | Model call limit, 1–12, default 6; at most 3 proposed tests |
 | `ISSUEFORGE_BASE_URL` | Endpoint default; CLI option overrides it |
 | `ISSUEFORGE_API_KEY` | Model credential, never forwarded into containers |
@@ -141,7 +142,7 @@ No swarm is needed for this slice: the dependency between test proposals and
 execution feedback is sequential. Token/call/context limits, explicit stopping,
 and recorded tool observations keep the investigation bounded.
 
-Model requests have a 30-second timeout and a 1,600 completion-token limit per call;
+Model requests have a configurable timeout (30 seconds by default) and a 1,600 completion-token limit per call;
 there are no automatic HTTP retries. This caps request counts, not currency spend.
 Context is bounded to 70,000 serialized characters per request. Source snapshots
 are limited to 500 files, 2 MB total, and 256 KB per file. Binary assets, hidden files,
@@ -184,3 +185,35 @@ See [security](SECURITY.md), [contribution guidance](CONTRIBUTING.md),
 MIT for original source. No competitor source, benchmark corpus, model weights or
 container images are bundled. External dependencies retain their own licenses and
 service terms; review those before deployment or redistribution.
+
+## Real-model GitHub Action
+
+`.github/workflows/live-model.yml` is separate from the ordinary checks. It runs
+Ollama 0.40.6 (pinned image digest) and `qwen2.5-coder:1.5b-instruct-q4_K_M` locally
+on a standard Ubuntu CPU runner. No hosted model API, key or paid inference endpoint
+is used. Cloud features are disabled and the server binds to loopback. The job has
+a 20-minute timeout, bounded requests and limited model-container resources.
+
+For a same-repository PR touching source, fixtures, tests or this workflow, the job
+runs automatically. After the workflow is merged to the default branch, it also
+supports **Actions → live-model → Run workflow**. It does not run on fork PRs.
+No workflow uses `pull_request_target` or repository write permissions.
+
+The model receives the buggy source snapshot and issue, **not** a supplied regression
+test or the fixed checkout. It must generate a test through the normal agent loop.
+The test must fail with matching assertions twice on the buggy source and pass on
+the known-fixed control. `scripts/verify_live_evidence.py` also requires live-model
+mode, actual recorded output tokens, executed tests and a matching artifact hash.
+
+Every attempt uploads `live-model-evidence-RUN_ID-ATTEMPT` for 14 days, including
+the generated test, report, verification gate and runtime/model metadata when
+available. A failed model run fails the job and retains its evidence; it is never
+replaced with an offline candidate. Download and inspect the artifact from the run.
+The first run is pending; a workflow definition is not itself proof of inference.
+
+The 1.5B Qwen model is about 1 GB in this quantization, Apache-2.0 licensed, and
+selected for a small CPU smoke test, not as a claim of best model quality. See
+[model](https://ollama.com/library/qwen2.5-coder:1.5b-instruct-q4_K_M),
+[Ollama Docker](https://docs.ollama.com/docker), and
+[release](https://github.com/ollama/ollama/releases/tag/v0.40.6).
+A passing authored fixture is only integration evidence, not a real-world benchmark.

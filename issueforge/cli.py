@@ -44,6 +44,12 @@ def main(argv=None) -> int:
     run.add_argument("--image", default="python:3.12-slim", help="Trusted prebuilt image; never pulled automatically")
     run.add_argument("--timeout", type=int, default=25, help="Seconds per container, 1–120")
     run.add_argument("--max-steps", type=int, default=6, help="Maximum model calls, 1–12")
+    run.add_argument(
+        "--model-timeout",
+        type=int,
+        default=30,
+        help="Seconds per model request, 1–120; increase for local CPU inference",
+    )
     args = parser.parse_args(argv)
     try:
         if args.command == "inspect":
@@ -84,6 +90,7 @@ def main(argv=None) -> int:
                 os.environ.get("ISSUEFORGE_API_KEY", ""),
                 allow_remote=args.allow_remote,
                 max_calls=args.max_steps,
+                timeout=args.model_timeout,
             )
         report = investigate(
             snap, issue, sandbox, out, candidate=candidate, provider=provider, control=control, max_steps=args.max_steps
