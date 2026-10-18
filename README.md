@@ -7,8 +7,9 @@ An agent can inspect a bounded source snapshot, search it, propose a unittest te
 and revise it using observed execution feedback. Execution happens only in restricted
 Docker containers. The original repository is never mounted or edited.
 
-**Release status:** implementation delivered for review. Local host-side tests pass;
-Docker and a real language model have not been verified in the build environment.
+**Release status:** [PR #1](https://github.com/oshada28nilendra-debug/issueforge/pull/1) is open for review. Host checks on Python
+3.11/3.12/3.13 and all three real Docker tests [passed in CI](https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39093841366).
+Real language-model generation and effectiveness remain unverified.
 See [verification](docs/VERIFICATION.md) for the exact checks and blockers.
 
 ## Why use it?
@@ -54,8 +55,8 @@ python -m issueforge run \
 Use a **new** output directory for every run. An existing path is rejected.
 On a working Docker setup the authored example is intended to produce two matching
 assertion failures on the buggy version and a pass on the fixed control. That
-container outcome was **not observed in the build environment**; the integration
-suite checks it when Docker is available. The candidate is a supplied fixture,
+container outcome was **verified in GitHub Actions**; see the linked CI run.
+The build environment itself has no Docker daemon. The candidate is a supplied fixture,
 not an AI-generated result.
 
 Without Docker the CLI exits 3 and writes an honest `could_not_investigate` report.
@@ -160,7 +161,8 @@ ruff check .
 
 HTTP tests use a local **simulated server**; orchestration tests use a **test-double
 sandbox**. Neither establishes live model or Docker behavior. CI config includes
-separate host and real-container jobs; it has not run on GitHub yet.
+separate host and real-container jobs; both passed on the implementation commit.
+See `delivery/github-ci.json` for the exact revision and evidence.
 
 ## Limits and next work
 

@@ -6,7 +6,7 @@
       "slot": "2026-10-18-morning",
       "local_time": "09:00",
       "project": "IssueForge",
-      "status": "repository_designated_ci_pending",
+      "status": "published_docker_verified_live_model_pending",
       "completed": false,
       "target_user": "Maintainers triaging small Python unittest repositories",
       "problem": "Convert a bug report into reproducible, reviewable execution evidence",
@@ -69,26 +69,60 @@
         "tests_total": 48,
         "tests_passed": 45,
         "tests_skipped": 3,
-        "docker_execution_verified": false,
+        "docker_execution_verified": true,
         "live_model_verified": false,
-        "github_ci_run": false,
+        "github_ci_run": true,
         "wheel_build": "passed; pip wheel --no-deps --no-build-isolation .",
         "installed_wheel_smoke": "passed; isolated /tmp import via target installation",
         "actual_cli_run": "could_not_investigate; Docker CLI unavailable; exit 3",
         "blockers": [
-          "Docker execution pending GitHub Actions",
-          "No real model configured or exercised"
-        ]
+          "Real model generation/relevance has not been verified"
+        ],
+        "github_ci": {
+          "repository": "oshada28nilendra-debug/issueforge",
+          "pull_request": "https://github.com/oshada28nilendra-debug/issueforge/pull/1",
+          "tested_head_sha": "a6816212ff44bcdbe339b4e28c092626ec806bcf",
+          "run_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39093841366",
+          "run_id": 39093841366,
+          "conclusion": "success",
+          "jobs": {
+            "unit (3.11)": "success",
+            "unit (3.12)": "success",
+            "unit (3.13)": "success",
+            "container-integration": "success"
+          },
+          "host_tests_per_python": {
+            "passed": 45,
+            "skipped": 3
+          },
+          "actual_docker_tests": {
+            "passed": 3,
+            "skipped": 0
+          },
+          "docker_test_cases": [
+            "unprivileged user, no outbound network and read-only source",
+            "fixed source does not reproduce",
+            "buggy source fails twice and fixed control passes"
+          ],
+          "container_image_digest": "sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1",
+          "live_model_verified": false,
+          "note": "CI results checked through job status and decoded Docker job logs. This record tests the implementation commit; the following commit updates delivery documentation only."
+        }
       },
       "delivery_links": [
         "README.md",
         "docs/VALIDATION.md",
         "docs/VERIFICATION.md",
-        "delivery/blocked-demo/report.json"
+        "delivery/blocked-demo/report.json",
+        "https://github.com/oshada28nilendra-debug/issueforge/pull/1",
+        "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39093841366",
+        "delivery/github-ci.json"
       ],
       "suggested_repository": "oshada28nilendra-debug/issueforge",
       "suggested_branch": "feat/issueforge-first-release",
-      "source_package": "IssueForge-2026-10-18-source.zip"
+      "source_package": "IssueForge-2026-10-18-source.zip",
+      "pull_request": "https://github.com/oshada28nilendra-debug/issueforge/pull/1",
+      "commit": "a6816212ff44bcdbe339b4e28c092626ec806bcf"
     },
     {
       "slot": "2026-10-18-afternoon",

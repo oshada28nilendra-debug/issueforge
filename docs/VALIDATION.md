@@ -1,8 +1,8 @@
 # Validation record — 2026-10-18-morning
 
 Decision: **narrow and proceed with an implementation for review**, not a novelty
-or product-market-fit claim. Container execution and live-model effectiveness remain
-unverified in this delivery environment.
+or product-market-fit claim. Container execution subsequently passed all three tests in GitHub Actions;
+live-model effectiveness remains unverified. See `delivery/github-ci.json`.
 
 ## User, pain and proposed value
 
@@ -56,9 +56,9 @@ no experimental claims from the paper were independently replicated.
 | Avoid host fallback when Docker is absent | Verified locally, including CLI report |
 | Preserve input files and reject overwriting existing evidence | Verified locally |
 | Classify stable failures, errors, passes and inconsistent outcomes | Verified with deterministic records |
-| Run buggy fixture twice and pass fixed control in real containers | Blocked locally; explicit opt-in tests and CI job supplied |
+| Run buggy fixture twice and pass fixed control in real containers | Verified in GitHub Actions; 3 real Docker tests passed |
 | Produce a relevant reproducer using a real model | Not verified; requires a configured model plus Docker |
-| GitHub PR and CI | Repository designated after initial delivery; CI pending |
+| GitHub PR and CI | PR #1 open; all four jobs passed on the implementation commit |
 
 ## What could invalidate the product
 

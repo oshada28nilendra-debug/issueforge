@@ -41,3 +41,19 @@ workflow works, complete Docker execution and a real-model investigation.
 The user subsequently designated https://github.com/oshada28nilendra-debug/issueforge.
 The implementation is prepared on `feat/issueforge-first-release`; remote CI is pending.
 The no-repository statement above describes the initial archive checkpoint.
+
+## Current remote CI results
+
+[PR #1](https://github.com/oshada28nilendra-debug/issueforge/pull/1) and [CI run](https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39093841366) were inspected after publication.
+Python 3.11, 3.12 and 3.13 jobs all passed: 45 host/offline tests each, with
+three Docker tests deliberately skipped in those host-only jobs. The separate
+Docker job ran all three actual-container tests with **3 passed, 0 skipped**.
+The decoded job log was checked, not only the job badge.
+
+Tested implementation commit: `a6816212ff44bcdbe339b4e28c092626ec806bcf`.
+The following update changes delivery documentation and the ledger only.
+See `delivery/github-ci.json` for exact job status and container-image digest.
+The historical local blocked report is retained for provenance.
+
+**Current status: published and Docker-verified; live-model verification pending.**
+No real language model or paid API was exercised. The PR remains unmerged.

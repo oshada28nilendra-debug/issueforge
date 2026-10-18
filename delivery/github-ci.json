@@ -1,0 +1,30 @@
+{
+  "repository": "oshada28nilendra-debug/issueforge",
+  "pull_request": "https://github.com/oshada28nilendra-debug/issueforge/pull/1",
+  "tested_head_sha": "a6816212ff44bcdbe339b4e28c092626ec806bcf",
+  "run_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39093841366",
+  "run_id": 39093841366,
+  "conclusion": "success",
+  "jobs": {
+    "unit (3.11)": "success",
+    "unit (3.12)": "success",
+    "unit (3.13)": "success",
+    "container-integration": "success"
+  },
+  "host_tests_per_python": {
+    "passed": 45,
+    "skipped": 3
+  },
+  "actual_docker_tests": {
+    "passed": 3,
+    "skipped": 0
+  },
+  "docker_test_cases": [
+    "unprivileged user, no outbound network and read-only source",
+    "fixed source does not reproduce",
+    "buggy source fails twice and fixed control passes"
+  ],
+  "container_image_digest": "sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1",
+  "live_model_verified": false,
+  "note": "CI results checked through job status and decoded Docker job logs. This record tests the implementation commit; the following commit updates delivery documentation only."
+}
