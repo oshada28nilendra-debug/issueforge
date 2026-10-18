@@ -189,7 +189,7 @@ service terms; review those before deployment or redistribution.
 ## Real-model GitHub Action
 
 `.github/workflows/live-model.yml` is separate from the ordinary checks. It runs
-Ollama 0.40.6 (pinned image digest) and `qwen2.5-coder:1.5b-instruct-q4_K_M` locally
+Ollama 0.40.6 (pinned image digest) and `qwen2.5-coder:7b-instruct-q4_K_M` locally
 on a standard Ubuntu CPU runner. No hosted model API, key or paid inference endpoint
 is used. Cloud features are disabled and the server binds to loopback. The job has
 a 20-minute timeout, bounded requests and limited model-container resources.
@@ -211,9 +211,9 @@ available. A failed model run fails the job and retains its evidence; it is neve
 replaced with an offline candidate. Download and inspect the artifact from the run.
 The first run is pending; a workflow definition is not itself proof of inference.
 
-The 1.5B Qwen model is about 1 GB in this quantization, Apache-2.0 licensed, and
+The 7B Qwen model is about 4.7 GB in this quantization, Apache-2.0 licensed, and
 selected for a small CPU smoke test, not as a claim of best model quality. See
-[model](https://ollama.com/library/qwen2.5-coder:1.5b-instruct-q4_K_M),
+[model](https://ollama.com/library/qwen2.5-coder:7b-instruct-q4_K_M),
 [Ollama Docker](https://docs.ollama.com/docker), and
 [release](https://github.com/ollama/ollama/releases/tag/v0.40.6).
 A passing authored fixture is only integration evidence, not a real-world benchmark.
