@@ -24,7 +24,11 @@ concurrently modifying parent directories on the host. Do not ingest repositorie
 from a concurrently hostile shared filesystem. Byte budgets and allowed suffixes
 are not a complete defense against hidden secrets or harmful content.
 
-Redaction is best effort. Keys embedded in unusual source forms can be missed.
+Redaction is best effort. Common quoted JSON assignments, Bearer/Basic headers,
+credential-bearing URLs, private-key blocks and known key patterns are filtered.
+Unusual forms, encoded credentials and custom tokens can still be missed.
+Candidate source is preserved as executable evidence rather than rewritten: inspect
+all exported candidates before sharing them.
 Before transmitting source, inspect all included files and confirm you are permitted
 to send them to the chosen provider. `--allow-remote` permits HTTPS source transfer
 and possible provider costs. No provider credentials are passed to a container.

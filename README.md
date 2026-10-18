@@ -7,11 +7,28 @@ An agent can inspect a bounded source snapshot, search it, propose a unittest te
 and revise it using observed execution feedback. Execution happens only in restricted
 Docker containers. The original repository is never mounted or edited.
 
-**Release status:** [PR #1](https://github.com/oshada28nilendra-debug/issueforge/pull/1) is open for review. Host checks on Python
+**Release status:** The initial implementation was [merged in PR #1](https://github.com/oshada28nilendra-debug/issueforge/pull/1). Host checks on Python
 3.11/3.12/3.13 and all three real Docker tests [passed in CI](https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39093841366).
 A [real-model fixture smoke test](https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39096221948) also passed with Qwen2.5-Coder 7B.
 Broader effectiveness on real issues remains unevaluated.
 See [verification](docs/VERIFICATION.md) for the exact checks and blockers.
+
+## Contents
+
+- [Why use it?](#why-use-it)
+- [Requirements](#requirements)
+- [Install](#install)
+- [Quickstart without AI](#quickstart-supplied-regression-test-no-ai-calls)
+- [Local AI generation](#generate-a-test-using-a-local-model)
+- [Commands and configuration](#commands-and-configuration)
+- [Evidence and verdicts](#evidence-semantics)
+- [Architecture](#architecture)
+- [Verification and development](#verification-and-development)
+- [Real-model GitHub Action](#real-model-github-action)
+- [Security and privacy](#security-and-privacy)
+- [Limits and next work](#limits-and-next-work)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Why use it?
 
@@ -36,9 +53,24 @@ claim an advantage over existing coding agents without comparative evaluation.
 `inspect`, help and host-side tests work without Docker or a model.
 Repository/test code is **never** executed on the host as a fallback.
 
+## Install
+
+```bash
+git clone https://github.com/oshada28nilendra-debug/issueforge.git
+cd issueforge
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
+python -m issueforge --help
+```
+
+Run the examples from the repository root. The installed `issueforge` command is
+also available. Only build tooling is downloaded during installation; model weights
+and Docker images require separate, deliberate downloads.
+
 ## Quickstart: supplied regression test, no AI calls
 
-From the extracted project directory:
+First inspect the included source, then evaluate the supplied test:
 
 ```bash
 python -m issueforge inspect --repo examples/buggy
@@ -65,13 +97,15 @@ The actual local blocked-run evidence is included at `delivery/blocked-demo/`.
 
 ## Generate a test using a local model
 
-Install Ollama separately and explicitly download a model your machine can support.
-Run `ollama list` to obtain an installed model name; replace `YOUR_INSTALLED_MODEL`:
+Install and start [Ollama](https://docs.ollama.com/) separately. The following
+model was exercised in CI; its quantized weights are about 4.7 GB, and running it
+requires additional memory. Choose a model your machine can support:
 
 ```bash
+ollama pull qwen2.5-coder:7b-instruct-q4_K_M
 python -m issueforge run \
   --repo examples/buggy --issue examples/issue.md \
-  --model YOUR_INSTALLED_MODEL \
+  --model qwen2.5-coder:7b-instruct-q4_K_M --model-timeout 120 \
   --endpoint http://localhost:11434/v1 \
   --control-repo examples/fixed \
   --out runs/local-model
@@ -166,27 +200,6 @@ sandbox**. Neither establishes live model or Docker behavior. CI config includes
 separate host and real-container jobs; both passed on the implementation commit.
 See `delivery/github-ci.json` for the exact revision and evidence.
 
-## Limits and next work
-
-- Small stdlib/unittest projects only by default. No pytest adapter, dependency
-  auto-installation, arbitrary shell tools, package builds or repair generation.
-- Text-only snapshots omit data fixtures and may change the target environment.
-- Docker is not a microVM and not a hostile multi-tenant security boundary.
-- Repository code can tamper with in-process test telemetry; there is no independent
-  execution attestation. Logs and model text remain untrusted.
-- AST checks reject trivial unconditional failures, but are not a security analyzer.
-- No real-issue evaluation or user adoption study has been performed. The proposed
-  adoption advantage remains a hypothesis.
-
-See [security](SECURITY.md), [contribution guidance](CONTRIBUTING.md),
-[verification](docs/VERIFICATION.md), and [GitHub handoff](docs/HANDOFF.md).
-
-## License
-
-MIT for original source. No competitor source, benchmark corpus, model weights or
-container images are bundled. External dependencies retain their own licenses and
-service terms; review those before deployment or redistribution.
-
 ## Real-model GitHub Action
 
 `.github/workflows/live-model.yml` is separate from the ordinary checks. It runs
@@ -196,7 +209,7 @@ is used. Cloud features are disabled and the server binds to loopback. The job h
 a 20-minute timeout, bounded requests and limited model-container resources.
 
 For a same-repository PR touching source, fixtures, tests or this workflow, the job
-runs automatically. After the workflow is merged to the default branch, it also
+runs automatically. The merged workflow also
 supports **Actions → live-model → Run workflow**. It does not run on fork PRs.
 No workflow uses `pull_request_target` or repository write permissions.
 
@@ -223,3 +236,57 @@ selected for a small CPU smoke test, not as a claim of best model quality. See
 [Ollama Docker](https://docs.ollama.com/docker), and
 [release](https://github.com/ollama/ollama/releases/tag/v0.40.6).
 A passing authored fixture is only integration evidence, not a real-world benchmark.
+
+## Security and privacy
+
+Use this release as a local tool for repositories you own or are permitted to inspect.
+It has not been certified safe for arbitrary hostile repositories or public hosting.
+For hostile code, use a dedicated disposable VM in addition to the Docker limits.
+Never run the container harness directly on your host against untrusted code.
+
+| Data | Where it goes / what to review |
+| --- | --- |
+| Source snapshot and issue | Sent to the chosen model; remote transfer requires `--allow-remote` |
+| API key | Read from your environment for provider authentication; not passed to target containers |
+| Model candidates | Saved as executable source; review before running elsewhere or sharing |
+| Reports and traces | Written locally; can reveal paths, source logic, or sensitive test data |
+| Telemetry | No automatic telemetry or external report upload in the CLI |
+
+No model credential is bundled. A local model can be used without an API key.
+Redaction covers common assignments, quoted JSON secrets, authorization headers,
+private-key blocks and credential-bearing URLs, but remains best effort. Inspect
+source **and** generated artifacts before sending or publishing them.
+
+The [security audit](docs/SECURITY_AUDIT.md) records the scan scope and findings.
+The public commit history contains a personal author email address. Credential
+scans do not establish that no one accessed public data, nor inspect your provider
+account logs or private GitHub security alerts. See [SECURITY.md](SECURITY.md) for
+isolation assumptions and vulnerability reporting.
+
+## Limits and next work
+
+- Small stdlib/unittest projects only by default. No pytest adapter, dependency
+  auto-installation, arbitrary shell tools, package builds or repair generation.
+- Text-only snapshots omit data fixtures and may change the target environment.
+- Docker is not a microVM and not a hostile multi-tenant security boundary.
+- Repository code can tamper with in-process test telemetry; there is no independent
+  execution attestation. Logs and model text remain untrusted.
+- AST checks reject trivial unconditional failures, but are not a security analyzer.
+- No real-issue evaluation or user adoption study has been performed. The proposed
+  adoption advantage remains a hypothesis.
+
+See [security](SECURITY.md), [contribution guidance](CONTRIBUTING.md),
+[verification](docs/VERIFICATION.md), and [GitHub handoff](docs/HANDOFF.md).
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md), run the checks above, and open a focused
+pull request with reproduction steps. Never include credentials or private source
+in public issues, tests, logs, or uploaded evidence. Security problems should be
+reported privately as described in [SECURITY.md](SECURITY.md).
+
+## License
+
+MIT for original source. No competitor source, benchmark corpus, model weights or
+container images are bundled. External dependencies retain their own licenses and
+service terms; review those before deployment or redistribution.
