@@ -24,7 +24,27 @@ def redact(text: str) -> str:
     text = re.sub(
         r"-----BEGIN [^-]*PRIVATE KEY-----.*?-----END [^-]*PRIVATE KEY-----", "[REDACTED PRIVATE KEY]", text, flags=re.S
     )
-    text = re.sub(r"(?i)((?:api[_-]?key|token|password|secret)\s*[=:]\s*)[^\s,;]+", r"\1[REDACTED]", text)
+    # Keep quote delimiters intact so structured JSON remains parseable.
+    text = re.sub(
+        r"""(?i)([\"']?(?:api[_-]?key|token|password|secret)[\"']?\s*[=:]\s*)([\"'])(.*?)\2""",
+        lambda match: match[1] + match[2] + "[REDACTED]" + match[2],
+        text,
+    )
+    text = re.sub(
+        r"""(?i)((?:api[_-]?key|token|password|secret)\s*[=:]\s*)(?![\"'])[^\s,;\"']+""",
+        r"\1[REDACTED]",
+        text,
+    )
+    text = re.sub(
+        r"""(?i)([\"']?authorization[\"']?\s*:\s*[\"']?(?:bearer|basic)\s+)[^\s\"',;}]+""",
+        r"\1[REDACTED]",
+        text,
+    )
+    text = re.sub(
+        r"(?i)([a-z][a-z0-9+.-]*://)[^/\s:@]+:[^/\s@]+@",
+        r"\1[REDACTED]@",
+        text,
+    )
     return re.sub(r"\b(?:sk-[A-Za-z0-9_-]{16,}|gh[pousr]_[A-Za-z0-9]{20,})\b", "[REDACTED]", text)
 
 

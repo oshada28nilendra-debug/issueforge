@@ -104,3 +104,40 @@ class EvidenceTests(unittest.TestCase):
         passed = {"kind": "pass", "tests": 1}
         failed = {"kind": "assertion_failure", "tests": 1, "signature": "abc"}
         self.assertEqual(classify(passed, [failed, passed]), "could_not_investigate")
+
+
+class RedactionTests(unittest.TestCase):
+    def test_quoted_json_keys_are_redacted_without_breaking_structure(self):
+        from issueforge.policy import redact
+
+        secret = "sensitive-" + "fixture-value"
+        text = '{"api_key": "' + secret + '", "password": "' + secret + '"}'
+        clean = redact(text)
+        self.assertNotIn(secret, clean)
+        self.assertEqual(__import__("json").loads(clean)["api_key"], "[REDACTED]")
+
+    def test_authorization_headers_are_redacted(self):
+        from issueforge.policy import redact
+
+        secret = "sensitive-" + "fixture-value"
+        for text in [
+            "Authorization: Bearer " + secret,
+            "authorization: Basic " + secret,
+            '{"Authorization": "Bearer ' + secret + '"}',
+        ]:
+            with self.subTest(text=text):
+                self.assertNotIn(secret, redact(text))
+
+    def test_database_url_credentials_are_redacted(self):
+        from issueforge.policy import redact
+
+        secret = "sensitive-" + "fixture-value"
+        text = "postgresql://demo:" + secret + "@db.example.invalid/app"
+        self.assertNotIn(secret, redact(text))
+        self.assertIn("db.example.invalid", redact(text))
+
+    def test_does_not_change_non_secret_test_code(self):
+        from issueforge.policy import redact
+
+        code = 'self.assertEqual(total(["0.10", "0.20"]), Decimal("0.30"))'
+        self.assertEqual(redact(code), code)
