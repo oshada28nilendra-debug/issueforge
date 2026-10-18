@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-18T03:18:36.132989+00:00",
+  "status": "could_not_investigate",
+  "source_digest": "df8ef30762c818d2cbfacec33778436432591e1ef145aa1c5c5dacb1d3b54388",
+  "included_files": [
+    "prices.py",
+    "tests/test_smoke.py"
+  ],
+  "issue": "# Currency totals contain floating point noise\n\nCalling prices.total(['0.10', '0.20']) should return Decimal('0.30') exactly.\nInstead the buggy version includes extra decimal digits. Whole amounts still pass.\nPlease produce a small regression test demonstrating the exact expected behavior.\n",
+  "model_mode": "supplied_candidate",
+  "execution_backend": "docker",
+  "live_model_verified": false,
+  "sandbox_verified": false,
+  "control_verified": false,
+  "control_digest": "94eed5e1ef308a9f66bcfa09b6277861e44140f1c656a9ae7fea7b7eb336798c",
+  "baseline": null,
+  "proposals": [],
+  "events": [],
+  "model_usage": {},
+  "limits": {
+    "max_steps": 6,
+    "max_proposals": 3
+  },
+  "limitations": [
+    "Assertion failure is mechanical evidence; human review must confirm relevance.",
+    "Only a filtered text snapshot is executed, not a complete installed checkout.",
+    "Only stdlib unittest projects are supported by the default image.",
+    "Docker shares a kernel; use a disposable machine for hostile code.",
+    "Repository code can tamper with in-process unittest telemetry; not adversarial attestation.",
+    "Redaction is best effort; review source and reports before sharing."
+  ],
+  "blocker": "Docker CLI is unavailable; no host fallback exists"
+}

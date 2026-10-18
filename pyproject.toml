@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "issueforge"
+version = "0.1.0"
+description = "Evidence-first AI-assisted Python bug reproduction"
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Oshada Nilendra"}]
+dependencies = []
+
+[project.scripts]
+issueforge = "issueforge.cli:main"
+
+[tool.setuptools]
+packages = ["issueforge"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["F", "E9"]

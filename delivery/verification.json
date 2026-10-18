@@ -1,0 +1,67 @@
+{
+  "timestamp": "2026-10-18T08:49:34.721574+05:30",
+  "python": "3.12.14",
+  "checks": {
+    "lint": {
+      "exit_code": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "."
+      ],
+      "log": "delivery/lint.txt"
+    },
+    "format": {
+      "exit_code": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "log": "delivery/format.txt"
+    },
+    "compile": {
+      "exit_code": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "compileall",
+        "-q",
+        "issueforge"
+      ],
+      "log": "delivery/compile.txt"
+    },
+    "unit_and_offline_tests": {
+      "exit_code": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-W",
+        "error::ResourceWarning",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "log": "delivery/unit_and_offline_tests.txt"
+    }
+  },
+  "tests_total": 48,
+  "tests_passed": 45,
+  "tests_skipped": 3,
+  "docker_execution_verified": false,
+  "live_model_verified": false,
+  "github_ci_run": false,
+  "wheel_build": "passed; pip wheel --no-deps --no-build-isolation .",
+  "installed_wheel_smoke": "passed; isolated /tmp import via target installation",
+  "actual_cli_run": "could_not_investigate; Docker CLI unavailable; exit 3",
+  "blockers": [
+    "Docker CLI/daemon unavailable",
+    "No real model configured or exercised",
+    "No GitHub repository designated"
+  ]
+}
