@@ -1,0 +1,11 @@
+import unittest
+from decimal import Decimal
+from prices import total
+
+
+class TestTotal(unittest.TestCase):
+    def test_currency_totals(self):
+        self.assertEqual(total(['0.10', '0.20']), Decimal('0.30'))
+
+if __name__ == '__main__':
+    unittest.main()

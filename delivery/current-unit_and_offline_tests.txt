@@ -1,0 +1,60 @@
+test_cli_does_not_execute_repository_on_inspect (tests.test_cli.CLITests.test_cli_does_not_execute_repository_on_inspect) ... ok
+test_cli_missing_docker_creates_honest_report (tests.test_cli.CLITests.test_cli_missing_docker_creates_honest_report) ... ok
+test_inspect_manifest_is_real_and_secret_free (tests.test_cli.CLITests.test_inspect_manifest_is_real_and_secret_free) ... ok
+test_output_inside_repository_is_rejected (tests.test_cli.CLITests.test_output_inside_repository_is_rejected) ... ok
+test_run_exposes_model_timeout_for_cpu_inference (tests.test_cli.CLITests.test_run_exposes_model_timeout_for_cpu_inference) ... ok
+test_accepts_unittest_test (tests.test_core.CandidateTests.test_accepts_unittest_test) ... ok
+test_rejects_invalid_empty_or_unconditional_failure (tests.test_core.CandidateTests.test_rejects_invalid_empty_or_unconditional_failure) ... ok
+test_control_must_pass_when_provided (tests.test_core.EvidenceTests.test_control_must_pass_when_provided) ... ok
+test_environment_failure_is_not_reproduction (tests.test_core.EvidenceTests.test_environment_failure_is_not_reproduction) ... ok
+test_flaky_outcome_is_inconclusive (tests.test_core.EvidenceTests.test_flaky_outcome_is_inconclusive) ... ok
+test_passing_candidate_does_not_reproduce (tests.test_core.EvidenceTests.test_passing_candidate_does_not_reproduce) ... ok
+test_reproduced_requires_two_same_assertion_failures (tests.test_core.EvidenceTests.test_reproduced_requires_two_same_assertion_failures) ... ok
+test_hidden_folders_and_env_variants_not_sent (tests.test_core.SnapshotTests.test_hidden_folders_and_env_variants_not_sent) ... ok
+test_ignores_secrets_and_symlinks_and_preserves_safe_source (tests.test_core.SnapshotTests.test_ignores_secrets_and_symlinks_and_preserves_safe_source) ... ok
+test_oversized_repository_rejected (tests.test_core.SnapshotTests.test_oversized_repository_rejected) ... ok
+test_path_traversal_rejected (tests.test_core.SnapshotTests.test_path_traversal_rejected) ... ok
+test_snapshot_is_immutable_and_reproducible (tests.test_core.SnapshotTests.test_snapshot_is_immutable_and_reproducible) ... ok
+test_write_only_copies_snapshot (tests.test_core.SnapshotTests.test_write_only_copies_snapshot) ... ok
+test_container_is_unprivileged_networkless_and_readonly (tests.test_docker_integration.DockerIntegrationTests.test_container_is_unprivileged_networkless_and_readonly) ... skipped 'Docker integration disabled; set ISSUEFORGE_DOCKER_TESTS=1 with a cached image'
+test_fixed_repository_does_not_reproduce (tests.test_docker_integration.DockerIntegrationTests.test_fixed_repository_does_not_reproduce) ... skipped 'Docker integration disabled; set ISSUEFORGE_DOCKER_TESTS=1 with a cached image'
+test_known_bug_fails_twice_and_fixed_control_passes (tests.test_docker_integration.DockerIntegrationTests.test_known_bug_fails_twice_and_fixed_control_passes) ... skipped 'Docker integration disabled; set ISSUEFORGE_DOCKER_TESTS=1 with a cached image'
+test_agent_cannot_read_outside_snapshot (tests.test_engine.EngineTests.test_agent_cannot_read_outside_snapshot) ... ok
+test_candidate_exports_evidence_and_stable_verdict (tests.test_engine.EngineTests.test_candidate_exports_evidence_and_stable_verdict) ... ok
+test_control_failure_prevents_reproduced_verdict (tests.test_engine.EngineTests.test_control_failure_prevents_reproduced_verdict) ... ok
+test_failing_baseline_stops_investigation (tests.test_engine.EngineTests.test_failing_baseline_stops_investigation) ... ok
+test_invalid_model_candidate_keeps_diagnostics_and_can_be_revised (tests.test_engine.EngineTests.test_invalid_model_candidate_keeps_diagnostics_and_can_be_revised) ... ok
+test_missing_sandbox_avoids_model_and_returns_blocker (tests.test_engine.EngineTests.test_missing_sandbox_avoids_model_and_returns_blocker) ... ok
+test_no_result_when_agent_stops_without_proposal (tests.test_engine.EngineTests.test_no_result_when_agent_stops_without_proposal) ... ok
+test_output_is_never_overwritten (tests.test_engine.EngineTests.test_output_is_never_overwritten) ... ok
+test_tool_loop_can_read_then_propose (tests.test_engine.EngineTests.test_tool_loop_can_read_then_propose) ... ok
+test_accepts_actual_evidence_shape (tests.test_live_evidence.LiveEvidenceTests.test_accepts_actual_evidence_shape) ... ok
+test_rejects_changed_artifact (tests.test_live_evidence.LiveEvidenceTests.test_rejects_changed_artifact) ... ok
+test_rejects_missing_tokens_and_failed_control (tests.test_live_evidence.LiveEvidenceTests.test_rejects_missing_tokens_and_failed_control) ... ok
+test_rejects_skipped_or_different_failure_trials (tests.test_live_evidence.LiveEvidenceTests.test_rejects_skipped_or_different_failure_trials) ... ok
+test_rejects_supplied_candidate_even_when_it_fails (tests.test_live_evidence.LiveEvidenceTests.test_rejects_supplied_candidate_even_when_it_fails) ... ok
+test_cleanup_failure_is_not_success (tests.test_runner_process.ProcessSupervisorTests.test_cleanup_failure_is_not_success) ... ok
+test_output_limit_stops_flood_and_cleans (tests.test_runner_process.ProcessSupervisorTests.test_output_limit_stops_flood_and_cleans) ... ok
+test_timeout_kills_process_and_attempts_container_cleanup (tests.test_runner_process.ProcessSupervisorTests.test_timeout_kills_process_and_attempts_container_cleanup) ... ok
+test_valid_record_from_process_is_decoded_and_cleaned (tests.test_runner_process.ProcessSupervisorTests.test_valid_record_from_process_is_decoded_and_cleaned) ... ok
+test_action_content_must_be_text (tests.test_runtime.MalformedInputTests.test_action_content_must_be_text) ... ok
+test_inconsistent_failure_exit_code_is_not_evidence (tests.test_runtime.MalformedInputTests.test_inconsistent_failure_exit_code_is_not_evidence) ... ok
+test_external_endpoint_requires_explicit_consent (tests.test_runtime.ProviderTests.test_external_endpoint_requires_explicit_consent) ... ok
+test_http_only_permitted_on_loopback (tests.test_runtime.ProviderTests.test_http_only_permitted_on_loopback) ... ok
+test_model_required_and_budget_bounded (tests.test_runtime.ProviderTests.test_model_required_and_budget_bounded) ... ok
+test_parser_rejects_non_object_and_accepts_fenced_json (tests.test_runtime.ProviderTests.test_parser_rejects_non_object_and_accepts_fenced_json) ... ok
+test_decode_requires_valid_telemetry (tests.test_runtime.SandboxTests.test_decode_requires_valid_telemetry) ... ok
+test_errors_outrank_failures (tests.test_runtime.SandboxTests.test_errors_outrank_failures) ... ok
+test_flags_disable_network_and_host_privileges (tests.test_runtime.SandboxTests.test_flags_disable_network_and_host_privileges) ... ok
+test_image_cannot_inject_cli_arguments (tests.test_runtime.SandboxTests.test_image_cannot_inject_cli_arguments) ... ok
+test_missing_docker_returns_blocked_not_host_fallback (tests.test_runtime.SandboxTests.test_missing_docker_returns_blocked_not_host_fallback) ... ok
+test_http_errors_are_sanitized (tests.test_transport.TransportTests.test_http_errors_are_sanitized) ... ok
+test_malformed_envelope (tests.test_transport.TransportTests.test_malformed_envelope) ... ok
+test_malformed_usage_does_not_crash (tests.test_transport.TransportTests.test_malformed_usage_does_not_crash) ... ok
+test_null_message_content_is_reported (tests.test_transport.TransportTests.test_null_message_content_is_reported) ... ok
+test_real_http_serialization_and_usage (tests.test_transport.TransportTests.test_real_http_serialization_and_usage) ... ok
+
+----------------------------------------------------------------------
+Ran 55 tests in 3.640s
+
+OK (skipped=3)

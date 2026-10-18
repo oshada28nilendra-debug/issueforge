@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-18T04:13:00.253755+00:00",
+  "status": "reproduced",
+  "source_digest": "df8ef30762c818d2cbfacec33778436432591e1ef145aa1c5c5dacb1d3b54388",
+  "included_files": [
+    "prices.py",
+    "tests/test_smoke.py"
+  ],
+  "issue": "# Currency totals contain floating point noise\n\nCalling prices.total(['0.10', '0.20']) should return Decimal('0.30') exactly.\nInstead the buggy version includes extra decimal digits. Whole amounts still pass.\nPlease produce a small regression test demonstrating the exact expected behavior.\n",
+  "model_mode": "live_model",
+  "execution_backend": "docker",
+  "live_model_verified": true,
+  "sandbox_verified": true,
+  "control_verified": true,
+  "control_digest": "94eed5e1ef308a9f66bcfa09b6277861e44140f1c656a9ae7fea7b7eb336798c",
+  "baseline": {
+    "kind": "pass",
+    "tests": 1,
+    "failures": [],
+    "errors": [],
+    "skipped": 0,
+    "signature": "4d1b1588b6562509c3713feb80f7b95f2fd638b29aedea1b1ad18af97ec61625",
+    "log": "test_whole_amounts (test_smoke.TestSmoke.test_whole_amounts) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+    "returncode": 0,
+    "elapsed_seconds": 3.845
+  },
+  "proposals": [
+    {
+      "number": 1,
+      "hypothesis": "The `total` function in `prices.py` is converting floating-point numbers to strings before summing them, which introduces floating-point noise.",
+      "test_sha256": "f7cec406f1f2409c354076b088dbb09ca8ef57177c9378f91e68720c51f92484",
+      "attempts": [
+        {
+          "kind": "assertion_failure",
+          "tests": 1,
+          "failures": [
+            "issueforge_candidate.TestTotal.test_currency_totals"
+          ],
+          "errors": [],
+          "skipped": 0,
+          "signature": "5cb4d7df0a6aa45adb72ea49008bba681ee24bf64bf82e7c6ce29e149b09511b",
+          "log": "test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals) ... FAIL\n\n======================================================================\nFAIL: test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_reproduction.py\", line 8, in test_currency_totals\n    self.assertEqual(total(['0.10', '0.20']), Decimal('0.30'))\nAssertionError: Decimal('0.30000000000000004') != Decimal('0.30')\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+          "returncode": 1,
+          "elapsed_seconds": 0.242
+        },
+        {
+          "kind": "assertion_failure",
+          "tests": 1,
+          "failures": [
+            "issueforge_candidate.TestTotal.test_currency_totals"
+          ],
+          "errors": [],
+          "skipped": 0,
+          "signature": "5cb4d7df0a6aa45adb72ea49008bba681ee24bf64bf82e7c6ce29e149b09511b",
+          "log": "test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals) ... FAIL\n\n======================================================================\nFAIL: test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_reproduction.py\", line 8, in test_currency_totals\n    self.assertEqual(total(['0.10', '0.20']), Decimal('0.30'))\nAssertionError: Decimal('0.30000000000000004') != Decimal('0.30')\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+          "returncode": 1,
+          "elapsed_seconds": 0.226
+        }
+      ],
+      "control": {
+        "kind": "pass",
+        "tests": 1,
+        "failures": [],
+        "errors": [],
+        "skipped": 0,
+        "signature": "0b3eeaa24bf259ab267de47e975a79df501e1fc8ee6893dae1130596d0cd46a3",
+        "log": "test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+        "returncode": 0,
+        "elapsed_seconds": 0.23
+      },
+      "status": "reproduced"
+    }
+  ],
+  "events": [
+    {
+      "step": 1,
+      "action": "propose",
+      "request": {
+        "action": "propose",
+        "hypothesis": "The `total` function in `prices.py` is converting floating-point numbers to strings before summing them, which introduces floating-point noise.",
+        "test_code": "import unittest\nfrom decimal import Decimal\nfrom prices import total\n\n\nclass TestTotal(unittest.TestCase):\n    def test_currency_totals(self):\n        self.assertEqual(total(['0.10', '0.20']), Decimal('0.30'))\n\nif __name__ == '__main__':\n    unittest.main()"
+      },
+      "observation": {
+        "number": 1,
+        "hypothesis": "The `total` function in `prices.py` is converting floating-point numbers to strings before summing them, which introduces floating-point noise.",
+        "test_sha256": "f7cec406f1f2409c354076b088dbb09ca8ef57177c9378f91e68720c51f92484",
+        "attempts": [
+          {
+            "kind": "assertion_failure",
+            "tests": 1,
+            "failures": [
+              "issueforge_candidate.TestTotal.test_currency_totals"
+            ],
+            "errors": [],
+            "skipped": 0,
+            "signature": "5cb4d7df0a6aa45adb72ea49008bba681ee24bf64bf82e7c6ce29e149b09511b",
+            "log": "test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals) ... FAIL\n\n======================================================================\nFAIL: test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_reproduction.py\", line 8, in test_currency_totals\n    self.assertEqual(total(['0.10', '0.20']), Decimal('0.30'))\nAssertionError: Decimal('0.30000000000000004') != Decimal('0.30')\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "returncode": 1,
+            "elapsed_seconds": 0.242
+          },
+          {
+            "kind": "assertion_failure",
+            "tests": 1,
+            "failures": [
+              "issueforge_candidate.TestTotal.test_currency_totals"
+            ],
+            "errors": [],
+            "skipped": 0,
+            "signature": "5cb4d7df0a6aa45adb72ea49008bba681ee24bf64bf82e7c6ce29e149b09511b",
+            "log": "test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals) ... FAIL\n\n======================================================================\nFAIL: test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_reproduction.py\", line 8, in test_currency_totals\n    self.assertEqual(total(['0.10', '0.20']), Decimal('0.30'))\nAssertionError: Decimal('0.30000000000000004') != Decimal('0.30')\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "returncode": 1,
+            "elapsed_seconds": 0.226
+          }
+        ],
+        "control": {
+          "kind": "pass",
+          "tests": 1,
+          "failures": [],
+          "errors": [],
+          "skipped": 0,
+          "signature": "0b3eeaa24bf259ab267de47e975a79df501e1fc8ee6893dae1130596d0cd46a3",
+          "log": "test_currency_totals (issueforge_candidate.TestTotal.test_currency_totals) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+          "returncode": 0,
+          "elapsed_seconds": 0.23
+        },
+        "status": "reproduced"
+      }
+    }
+  ],
+  "model_usage": {
+    "prompt_tokens": 678,
+    "completion_tokens": 124
+  },
+  "limits": {
+    "max_steps": 6,
+    "max_proposals": 3
+  },
+  "limitations": [
+    "Assertion failure is mechanical evidence; human review must confirm relevance.",
+    "Only a filtered text snapshot is executed, not a complete installed checkout.",
+    "Only stdlib unittest projects are supported by the default image.",
+    "Docker shares a kernel; use a disposable machine for hostile code.",
+    "Repository code can tamper with in-process unittest telemetry; not adversarial attestation.",
+    "Redaction is best effort; review source and reports before sharing."
+  ],
+  "model_calls": 1
+}

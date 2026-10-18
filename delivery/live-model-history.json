@@ -1,0 +1,162 @@
+[
+  {
+    "run_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39095531642",
+    "head_sha": "aed05ef53ca3f8c71de8ea07e3ec133fc0ff1902",
+    "status": "could_not_investigate",
+    "blocker": "The provided hypothesis is not a valid Python code snippet.",
+    "models": {
+      "models": [
+        {
+          "name": "qwen2.5-coder:1.5b-instruct-q4_K_M",
+          "model": "qwen2.5-coder:1.5b-instruct-q4_K_M",
+          "modified_at": "2026-10-18T04:00:55.001629186Z",
+          "size": 986062089,
+          "digest": "d7372fd828518a4d38b1eb196c673c31a85f2ed302b3d1e406c4c2d1b64a0668",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen2",
+            "families": [
+              "qwen2"
+            ],
+            "parameter_size": "1.5B",
+            "quantization_level": "Q4_K_M",
+            "context_length": 32768,
+            "embedding_length": 1536,
+            "runner": "ggml"
+          },
+          "capabilities": [
+            "completion",
+            "tools",
+            "insert"
+          ]
+        }
+      ]
+    },
+    "model_calls": 2,
+    "usage": {
+      "prompt_tokens": 1300,
+      "completion_tokens": 67
+    },
+    "proposals": []
+  },
+  {
+    "run_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39095755416",
+    "head_sha": "4dd61b8fba825c6e09a3ee191752b601cbd9f6a1",
+    "status": "could_not_investigate",
+    "blocker": "The provided test code contains invalid Python syntax. Please revise the test_code to fix the syntax error.",
+    "models": {
+      "models": [
+        {
+          "name": "qwen2.5-coder:1.5b-instruct-q4_K_M",
+          "model": "qwen2.5-coder:1.5b-instruct-q4_K_M",
+          "modified_at": "2026-10-18T04:04:35.322546228Z",
+          "size": 986062089,
+          "digest": "d7372fd828518a4d38b1eb196c673c31a85f2ed302b3d1e406c4c2d1b64a0668",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen2",
+            "families": [
+              "qwen2"
+            ],
+            "parameter_size": "1.5B",
+            "quantization_level": "Q4_K_M",
+            "context_length": 32768,
+            "embedding_length": 1536,
+            "runner": "ggml"
+          },
+          "capabilities": [
+            "completion",
+            "tools",
+            "insert"
+          ]
+        }
+      ]
+    },
+    "model_calls": 2,
+    "usage": {
+      "prompt_tokens": 1471,
+      "completion_tokens": 76
+    },
+    "proposals": []
+  },
+  {
+    "run_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39095936606",
+    "head_sha": "f06bd6f03ffb4a01215013b8c26b83d4447f2ed9",
+    "status": "could_not_investigate",
+    "blocker": "Proposal budget exhausted",
+    "models": {
+      "models": [
+        {
+          "name": "qwen2.5-coder:1.5b-instruct-q4_K_M",
+          "model": "qwen2.5-coder:1.5b-instruct-q4_K_M",
+          "modified_at": "2026-10-18T04:07:17.416878178Z",
+          "size": 986062089,
+          "digest": "d7372fd828518a4d38b1eb196c673c31a85f2ed302b3d1e406c4c2d1b64a0668",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen2",
+            "families": [
+              "qwen2"
+            ],
+            "parameter_size": "1.5B",
+            "quantization_level": "Q4_K_M",
+            "context_length": 32768,
+            "embedding_length": 1536,
+            "runner": "ggml"
+          },
+          "capabilities": [
+            "completion",
+            "tools",
+            "insert"
+          ]
+        }
+      ]
+    },
+    "model_calls": 3,
+    "usage": {
+      "prompt_tokens": 7179,
+      "completion_tokens": 686
+    },
+    "proposals": [
+      {
+        "number": 1,
+        "sha256": "b89fcb5b96dd9fca983dc7beaaf303321096f2a6537f17e05fc354077767623a",
+        "trials": [
+          "assertion_failure",
+          "assertion_failure"
+        ],
+        "control": "assertion_failure",
+        "control_failures": [
+          "issueforge_candidate.TestSmoke.test_float_conversion"
+        ]
+      },
+      {
+        "number": 2,
+        "sha256": "b89fcb5b96dd9fca983dc7beaaf303321096f2a6537f17e05fc354077767623a",
+        "trials": [
+          "assertion_failure",
+          "assertion_failure"
+        ],
+        "control": "assertion_failure",
+        "control_failures": [
+          "issueforge_candidate.TestSmoke.test_float_conversion"
+        ]
+      },
+      {
+        "number": 3,
+        "sha256": "b89fcb5b96dd9fca983dc7beaaf303321096f2a6537f17e05fc354077767623a",
+        "trials": [
+          "assertion_failure",
+          "assertion_failure"
+        ],
+        "control": "assertion_failure",
+        "control_failures": [
+          "issueforge_candidate.TestSmoke.test_float_conversion"
+        ]
+      }
+    ]
+  }
+]

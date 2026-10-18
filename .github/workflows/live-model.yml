@@ -1,0 +1,75 @@
+name: live-model
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'issueforge/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'pyproject.toml'
+      - '.github/workflows/live-model.yml'
+permissions:
+  contents: read
+concurrency:
+  group: live-model-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  local-inference:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      LIVE_MODEL: qwen2.5-coder:7b-instruct-q4_K_M
+      OLLAMA_IMAGE: ollama/ollama:0.40.6@sha256:265409e1d931028a8f7d5a32bcbafddd7bffbc6cc629d77efe9560adf692a5e7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Start local-only model server
+        run: |
+          mkdir -p runs/live-model
+          docker pull "$OLLAMA_IMAGE"
+          docker pull python:3.12-slim
+          docker run -d --name issueforge-model \
+            -p 127.0.0.1:11434:11434 \
+            --cpus=4 --memory=8g --pids-limit=256 \
+            --cap-drop=ALL --security-opt=no-new-privileges \
+            -e OLLAMA_NO_CLOUD=1 -e OLLAMA_NUM_PARALLEL=1 \
+            -e OLLAMA_CONTEXT_LENGTH=8192 \
+            "$OLLAMA_IMAGE"
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:11434/api/version > runs/ollama-version.json; then
+              break
+            fi
+            sleep 2
+          done
+          curl --fail --silent http://127.0.0.1:11434/api/version
+          docker exec issueforge-model ollama pull "$LIVE_MODEL"
+          curl --fail --silent http://127.0.0.1:11434/api/tags > runs/ollama-models.json
+          docker image inspect "$OLLAMA_IMAGE" --format '{{json .RepoDigests}}' > runs/ollama-image.json
+      - name: Generate and execute a regression test with the real model
+        run: |
+          python -m issueforge run \
+            --repo examples/buggy --issue examples/issue.md \
+            --control-repo examples/fixed \
+            --model "$LIVE_MODEL" --endpoint http://127.0.0.1:11434/v1 \
+            --model-timeout 120 --max-steps 6 \
+            --out runs/live-evidence
+      - name: Require live inference, stable bug failure, and passing control
+        run: python scripts/verify_live_evidence.py runs/live-evidence
+      - name: Collect model diagnostics
+        if: always()
+        run: docker logs issueforge-model > runs/ollama-server.log 2>&1 || true
+      - name: Upload generated test and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-model-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: runs/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Stop model server
+        if: always()
+        run: docker rm -f issueforge-model || true
