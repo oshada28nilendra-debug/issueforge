@@ -9,7 +9,8 @@ Docker containers. The original repository is never mounted or edited.
 
 **Release status:** [PR #1](https://github.com/oshada28nilendra-debug/issueforge/pull/1) is open for review. Host checks on Python
 3.11/3.12/3.13 and all three real Docker tests [passed in CI](https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39093841366).
-Real language-model generation and effectiveness remain unverified.
+A [real-model fixture smoke test](https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39096221948) also passed with Qwen2.5-Coder 7B.
+Broader effectiveness on real issues remains unevaluated.
 See [verification](docs/VERIFICATION.md) for the exact checks and blockers.
 
 ## Why use it?
@@ -77,8 +78,8 @@ python -m issueforge run \
 ```
 
 The model must support Chat Completions JSON-object responses and the selected
-request parameters. Provider compatibility beyond the tested HTTP contract is
-unverified. Small models may return invalid actions or weak tests; these are
+request parameters. The separate live-model action verified the Ollama runtime/model combination
+recorded in `delivery/live-model-verification.json`; other providers are unverified. Small models may return invalid actions or weak tests; these are
 reported, not silently promoted to successes.
 
 For an authorized remote compatible provider, set `ISSUEFORGE_API_KEY` securely in
@@ -209,7 +210,12 @@ Every attempt uploads `live-model-evidence-RUN_ID-ATTEMPT` for 14 days, includin
 the generated test, report, verification gate and runtime/model metadata when
 available. A failed model run fails the job and retains its evidence; it is never
 replaced with an offline candidate. Download and inspect the artifact from the run.
-The first run is pending; a workflow definition is not itself proof of inference.
+The [7B run](https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39096221948) passed: one inference call produced a test
+that failed twice on the buggy checkout and passed on the fixed control. The
+generated source was reviewed for relevance to the reported behavior. Three earlier
+1.5B runs failed; their summaries remain in `delivery/live-model-history.json`.
+Complete evidence and model digests are in `delivery/live-model-verification.json`,
+`delivery/live-model-report.json`, and `delivery/live-model-generated-test.txt`.
 
 The 7B Qwen model is about 4.7 GB in this quantization, Apache-2.0 licensed, and
 selected for a small CPU smoke test, not as a claim of best model quality. See

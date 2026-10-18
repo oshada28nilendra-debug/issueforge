@@ -2,7 +2,8 @@
 
 Decision: **narrow and proceed with an implementation for review**, not a novelty
 or product-market-fit claim. Container execution subsequently passed all three tests in GitHub Actions;
-live-model effectiveness remains unverified. See `delivery/github-ci.json`.
+a live-model fixture smoke test also passed. Broader effectiveness remains
+unmeasured. See `delivery/live-model-verification.json`.
 
 ## User, pain and proposed value
 
@@ -36,10 +37,12 @@ no experimental claims from the paper were independently replicated.
 
 - [Ollama compatibility](https://docs.ollama.com/api/openai-compatibility): local
   Chat Completions endpoint shape is documented. A real HTTP adapter is implemented,
-  with a local simulated-server contract test. No installed model was exercised.
+  with simulated-server contract tests and a subsequent real Ollama/Qwen7B fixture
+  run; see `delivery/live-model-verification.json`.
 - [Docker run reference](https://docs.docker.com/reference/cli/docker/container/run/):
   network, mount, capability, user and resource arguments checked against official
-  documentation. Docker is absent locally, so operational correctness is unverified.
+  documentation. The three actual-container tests subsequently passed in GitHub
+  Actions; Docker remains unavailable only in the original local build environment.
 - Python standard-library unittest, urllib, dataclasses, pathlib and subprocess APIs
   are used; no third-party Python runtime dependencies or copied competitor code.
 - New original code uses MIT. Competitor code is not incorporated. No external
@@ -57,7 +60,7 @@ no experimental claims from the paper were independently replicated.
 | Preserve input files and reject overwriting existing evidence | Verified locally |
 | Classify stable failures, errors, passes and inconsistent outcomes | Verified with deterministic records |
 | Run buggy fixture twice and pass fixed control in real containers | Verified in GitHub Actions; 3 real Docker tests passed |
-| Produce a relevant reproducer using a real model | Not verified; requires a configured model plus Docker |
+| Produce a relevant reproducer using a real model | Verified for the authored currency fixture with local Qwen2.5-Coder 7B; generated source reviewed by the assistant |
 | GitHub PR and CI | PR #1 open; all four jobs passed on the implementation commit |
 
 ## What could invalidate the product

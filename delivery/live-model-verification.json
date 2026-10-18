@@ -1,0 +1,58 @@
+{
+  "run_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39096221948",
+  "tested_head_sha": "4f4a25db601ffa5ca0c4c7275ab8a79afc3f9381",
+  "artifact_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39096221948/artifacts/12124293279",
+  "conclusion": "success",
+  "model_runtime": {
+    "version": "0.40.6"
+  },
+  "models": {
+    "models": [
+      {
+        "name": "qwen2.5-coder:7b-instruct-q4_K_M",
+        "model": "qwen2.5-coder:7b-instruct-q4_K_M",
+        "modified_at": "2026-10-18T04:13:00.038013573Z",
+        "size": 4683087561,
+        "digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "7.6B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 3584,
+          "runner": "ggml"
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "insert"
+        ]
+      }
+    ]
+  },
+  "gate": {
+    "status": "passed",
+    "model_calls": 1,
+    "model_usage": {
+      "prompt_tokens": 678,
+      "completion_tokens": 124
+    },
+    "test_sha256": "f7cec406f1f2409c354076b088dbb09ca8ef57177c9378f91e68720c51f92484",
+    "limit": "Fixture smoke test only; human review must confirm relevance."
+  },
+  "baseline": "pass",
+  "trials": [
+    "assertion_failure",
+    "assertion_failure"
+  ],
+  "control": "pass",
+  "manual_relevance_review": "Generated unittest directly calls prices.total on the reported inputs and asserts Decimal(0.30); no mocks or unrelated assertions.",
+  "limits": "One authored fixture only; no real-issue benchmark, efficacy rate or production-readiness claim.",
+  "regular_ci_url": "https://github.com/oshada28nilendra-debug/issueforge/actions/runs/39096221975",
+  "relevance_reviewer": "assistant"
+}
