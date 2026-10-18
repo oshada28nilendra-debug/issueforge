@@ -119,3 +119,13 @@ class EngineTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "could_not_investigate")
         self.assertFalse(result["control_verified"])
+
+    def test_invalid_model_candidate_keeps_diagnostics_and_can_be_revised(self):
+        invalid = {"action": "propose", "hypothesis": "first hypothesis", "test_code": "Python unittest source"}
+        provider = ScriptedProvider(
+            [invalid, {"action": "propose", "hypothesis": "corrected syntax", "test_code": CANDIDATE}]
+        )
+        result = investigate(self.snapshot, "bug", RecordedSandbox([PASS, FAIL, FAIL]), self.out, provider=provider)
+        self.assertEqual(result["status"], "reproduced")
+        self.assertEqual(result["events"][0]["request"]["test_code"], "Python unittest source")
+        self.assertIn("line 1", result["events"][0]["observation"]["error"])

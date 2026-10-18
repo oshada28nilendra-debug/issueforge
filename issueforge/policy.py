@@ -121,7 +121,9 @@ def validate_candidate(code: str):
         raise PolicyError("Candidate must be Python code of at most 30,000 characters")
     try:
         tree = ast.parse(code)
-    except (SyntaxError, ValueError) as exc:
+    except SyntaxError as exc:
+        raise PolicyError(f"Candidate is invalid Python: {exc.msg} at line {exc.lineno}, column {exc.offset}") from exc
+    except ValueError as exc:
         raise PolicyError("Candidate is invalid Python") from exc
     methods = [node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name.startswith("test_")]
     assertions = [
